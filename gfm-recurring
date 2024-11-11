@@ -17,4 +17,4 @@ if [[ ! -f $JAR_FILE ]]; then
 fi
 
 # Execute JAR file with the params
-java -jar $JAR_FILE "$@"
+java -jar "$JAR_FILE" "$@"

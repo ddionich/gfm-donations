@@ -9,7 +9,6 @@ if [[ ! -f $JAR_FILE ]]; then
     ./gradlew clean build
 
     # Check if the JAR was created successfully
-    JAR_FILE="$(dirname "$0")/build/libs/gfm-donations.jar"
     if [[ ! -f $JAR_FILE ]]; then
         echo "Error: Compilation failed. JAR file could not be created."
         exit 1

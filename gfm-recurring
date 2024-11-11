@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Define jar filepath with pattern matching for any version
+JAR_FILE="$(dirname "$0")/build/libs/gfm-donations.jar"
+
+# Check if jar exists
+if [[ ! -f $JAR_FILE ]]; then
+    echo "JAR not found. Compiling..."
+    ./gradlew clean build
+
+    # Check if the JAR was created successfully
+    JAR_FILE="$(dirname "$0")/build/libs/gfm-donations.jar"
+    if [[ ! -f $JAR_FILE ]]; then
+        echo "Error: Compilation failed. JAR file could not be created."
+        exit 1
+    fi
+fi
+
+# Execute JAR file with the params
+java -jar $JAR_FILE "$@"

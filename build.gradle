@@ -21,9 +21,12 @@ repositories {
     mavenCentral()
 }
 
+//TODO: Exclude all unnecessary dependencies.
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    // https://mvnrepository.com/artifact/io.mockk/mockk
+    testImplementation group: 'io.mockk', name: 'mockk', version: '1.13.13'
 }
 
 test {

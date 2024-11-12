@@ -1,7 +1,10 @@
 package com.dionich.gofundme.payments.recurring.service
 
+import com.dionich.gofundme.payments.recurring.exception.DonationLimitExceededException
+import com.dionich.gofundme.payments.recurring.exception.EntityNotFoundException
 import com.dionich.gofundme.payments.recurring.model.Campaign
 import com.dionich.gofundme.payments.recurring.model.Donation
+import com.dionich.gofundme.payments.recurring.model.Donor
 import com.dionich.gofundme.payments.recurring.repository.CampaignRepository
 import com.dionich.gofundme.payments.recurring.repository.DonationRepository
 
@@ -19,10 +22,16 @@ class DonationService(
     }
 
     private fun verifyDonationRequirements(donation: Donation) {
-        val donor = donorService[donation.donor.id] ?: throw IllegalArgumentException("Donor (${donation.donor.id}) not found")
+        val donor =
+            donorService[donation.donor.id] ?: throw throw EntityNotFoundException(Donor::class.java, donation.donor.id)
+
         if (!donorValidationService.canDonate(donor, donation.amount)) {
-            throw IllegalArgumentException("This donation ($donation) exceeds donor limit ($${donor.limit}).")
+            throw DonationLimitExceededException(donor, donation)
         }
-        campaignRepository[donation.campaign.id] ?: throw IllegalArgumentException("Campaign (${donation.campaign.id}) not found")
+
+        campaignRepository[donation.campaign.id] ?: throw EntityNotFoundException(
+            entityClass = Campaign::class.java,
+            id = donation.campaign.id
+        )
     }
 }

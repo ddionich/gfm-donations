@@ -1,5 +1,7 @@
 package com.dionich.gofundme.payments.recurring.service
 
+import com.dionich.gofundme.payments.recurring.exception.DonationLimitExceededException
+import com.dionich.gofundme.payments.recurring.exception.EntityNotFoundException
 import com.dionich.gofundme.payments.recurring.model.Campaign
 import com.dionich.gofundme.payments.recurring.model.Donation
 import com.dionich.gofundme.payments.recurring.model.Donor
@@ -34,7 +36,7 @@ class DonationServiceTest {
         val donation = Donation(campaign = campaign, donor = Donor("1", 200.0), amount = 100.0)
         every { (donorService[donation.donor.id]) } returns (null)
 
-        assertThrows(IllegalArgumentException::class.java) { donationService.save(donation) }
+        assertThrows(EntityNotFoundException::class.java) { donationService.save(donation) }
     }
 
     @Test
@@ -44,7 +46,7 @@ class DonationServiceTest {
         every { (donorService[donation.donor.id]) } returns (donation.donor)
         every { (donorValidationService.canDonate(donation.donor, donation.amount)) } returns (false)
 
-        assertThrows(IllegalArgumentException::class.java) { donationService.save(donation) }
+        assertThrows(DonationLimitExceededException::class.java) { donationService.save(donation) }
     }
 
     @Test
@@ -55,7 +57,7 @@ class DonationServiceTest {
         every { (donorValidationService.canDonate(donation.donor, donation.amount)) } returns (true)
         every { (campaignRepository[donation.campaign.id]) } returns (null)
 
-        assertThrows(IllegalArgumentException::class.java) { donationService.save(donation) }
+        assertThrows(EntityNotFoundException::class.java) { donationService.save(donation) }
     }
 
     @Test

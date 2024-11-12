@@ -1,5 +1,6 @@
 package com.dionich.gofundme.payments.recurring.utils
 
+import com.dionich.gofundme.payments.recurring.exception.EntityNotFoundException
 import com.dionich.gofundme.payments.recurring.model.Campaign
 import com.dionich.gofundme.payments.recurring.model.Donation
 import com.dionich.gofundme.payments.recurring.model.Donor
@@ -47,8 +48,8 @@ class CommandProcessor(
         val campaignId = parts[2]
         val amount = parts[3].trim('$').toDouble()
 
-        val donor = donorService[donorId] ?: throw IllegalArgumentException("Donor not found: $donorId")
-        val campaign = campaignService[campaignId] ?: throw IllegalArgumentException("Campaign not found: $campaignId")
+        val donor = donorService[donorId] ?: throw EntityNotFoundException(Donor::class.java, donorId)
+        val campaign = campaignService[campaignId] ?: throw EntityNotFoundException(Campaign::class.java, campaignId)
 
         donationService.save(Donation(campaign = campaign, donor = donor, amount = amount))
     }

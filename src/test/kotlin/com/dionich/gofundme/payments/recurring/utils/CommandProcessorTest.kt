@@ -2,6 +2,8 @@ package com.dionich.gofundme.payments.recurring.utils
 
 import com.dionich.gofundme.payments.recurring.di.DI
 import com.dionich.gofundme.payments.recurring.di.initializeDependencies
+import com.dionich.gofundme.payments.recurring.exception.DonationLimitExceededException
+import com.dionich.gofundme.payments.recurring.exception.EntityNotFoundException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -41,7 +43,7 @@ class CommandProcessorTest {
             "Donate Greg HelpTheKids \$200",
             "Donate Janine SaveTheDogs \$50",
         )
-        assertThrows<IllegalArgumentException> { commandProcessor.processCommands(list) }
+        assertThrows<DonationLimitExceededException> { commandProcessor.processCommands(list) }
     }
 
     @Test
@@ -55,7 +57,7 @@ class CommandProcessorTest {
             "Donate Greg HelpTheAdults \$200",
             "Donate Janine SaveTheFish \$50",
         )
-        assertThrows<IllegalArgumentException> { commandProcessor.processCommands(list) }
+        assertThrows<EntityNotFoundException> { commandProcessor.processCommands(list) }
     }
 
 }

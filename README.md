@@ -63,3 +63,35 @@ SaveTheDogs: Total: $150
 
 This output shows a summary of each donor's total and average donations, 
 as well as each campaign's total received donations, all in alphabetical order.
+
+## Testing
+
+This project is using:
+- Jetbrains Kotlin test
+- MockK
+- jUnit 5
+
+To run the tests execute: 
+
+```bash 
+./gradlew test
+```
+
+## Explanation of project
+
+A decision was made to develop the project with the least amount of dependencies possible,
+resulting in the usage of libraries solely for STDIN and testing purposes.
+
+The project was developed in different layers, following a modular approach. 
+Basic logic for dependency injection was implemented. 
+Techniques such as inheritance, interfaces, abstract classes, and various Kotlin operators were utilized. 
+An in-memory repository was also implemented to store and manage information. 
+The primary goal was to establish a scalable project structure ready for the integration of technologies 
+such as dependency management libraries, databases, and modeling libraries.
+
+Custom exceptions, unit tests, and some integration tests were implemented. 
+It is believed that this project is complete and robust, considering it was developed within a few hours. 
+Additionally, a script was included to make the program's execution as seamless as possible for the user.
+
+There are several areas for improvement, such as better Gradle dependency management to avoid future conflicts, 
+and the possibility of adding automatic versioning using Gradle.

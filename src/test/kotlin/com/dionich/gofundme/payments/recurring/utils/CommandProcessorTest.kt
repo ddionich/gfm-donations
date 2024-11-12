@@ -6,11 +6,12 @@ import com.dionich.gofundme.payments.recurring.exception.DonationLimitExceededEx
 import com.dionich.gofundme.payments.recurring.exception.EntityNotFoundException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 
 class CommandProcessorTest {
 
-    lateinit var commandProcessor: CommandProcessor
+    private lateinit var commandProcessor: CommandProcessor
 
     @BeforeEach
     fun setUp() {
@@ -29,7 +30,7 @@ class CommandProcessorTest {
             "Donate Greg HelpTheKids \$200",
             "Donate Janine SaveTheDogs \$50",
         )
-        commandProcessor.processCommands(list)
+        assertDoesNotThrow { commandProcessor.processCommands(list) }
     }
 
     @Test
@@ -45,7 +46,23 @@ class CommandProcessorTest {
             "Donate Greg HelpTheKids \$200",
             "Donate Janine SaveTheDogs \$50",
         )
-        commandProcessor.processCommands(list)
+        assertDoesNotThrow { commandProcessor.processCommands(list) }
+    }
+
+    @Test
+    fun `wrong commands should be ignored`() {
+        val list = mutableListOf(
+            "Add Donor Greg \$1000",
+            "Add Donor Janine \$100",
+            "Add Campaign SaveTheDogs",
+            "Add Campaign HelpTheKids",
+            "bla bla bla",
+            "lol lol lol",
+            "Donate Greg SaveTheDogs \$100",
+            "Donate Greg HelpTheKids \$200",
+            "Donate Janine SaveTheDogs \$50",
+        )
+        assertDoesNotThrow { commandProcessor.processCommands(list) }
     }
 
     @Test
